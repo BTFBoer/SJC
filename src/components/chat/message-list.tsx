@@ -1,0 +1,7 @@
+import { useEffect, useRef } from "react";
+import type { ChatMessage } from "@/lib/chat-store";
+import { Portrait } from "@/components/chat/portrait";
+import { cn } from "@/lib/utils";
+export function MessageList({ messages, streaming }: { messages: ChatMessage[]; streaming: boolean }) { const endRef=useRef<HTMLDivElement>(null); useEffect(()=>{endRef.current?.scrollIntoView({behavior:"smooth",block:"end"})},[messages,streaming]); return <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 px-4 py-6 sm:px-6">{messages.map((m,i)=>m.role==="assistant"&&m.content.length===0&&streaming&&i===messages.length-1?<Typing key={m.id}/>:<Bubble key={m.id} message={m}/>)}<div ref={endRef}/></div>; }
+function Bubble({message}:{message:ChatMessage}) { const mine=message.role==="user"; return <div className={cn("flex items-end gap-2.5",mine?"justify-end":"justify-start")}>{mine?null:<Portrait size="sm"/>}<div className={cn("max-w-[min(78%,36rem)] px-4 py-2.5 text-sm leading-relaxed break-words whitespace-pre-wrap",mine?"rounded-xl rounded-br-xs bg-mine text-mine-fg":"rounded-xl rounded-bl-xs bg-bubble text-fg")}>{message.content}</div></div>; }
+function Typing(){return <div className="flex items-end gap-2.5"><Portrait size="sm"/><div className="flex h-10 items-center gap-1.5 rounded-xl rounded-bl-xs bg-bubble px-4"><i className="typing-dot"/><i className="typing-dot"/><i className="typing-dot"/></div></div>}

@@ -1,0 +1,5 @@
+import { cva, type VariantProps } from "class-variance-authority";
+import { forwardRef, type ButtonHTMLAttributes } from "react";
+import { cn } from "@/lib/utils";
+const variants = cva("inline-flex items-center justify-center gap-2 font-medium transition-opacity disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/70", { variants: { variant: { solid: "bg-accent text-accent-fg hover:opacity-90", ghost: "bg-transparent text-fg hover:bg-elevated", quiet: "bg-elevated text-fg hover:bg-bubble border border-border" }, size: { md: "h-11 px-4 text-sm rounded-lg", icon: "size-11 rounded-lg" } }, defaultVariants: { variant: "solid", size: "md" } });
+export const Button = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof variants>>(function Button({ className, variant, size, type="button", ...props }, ref) { return <button ref={ref} type={type} className={cn(variants({variant,size}), className)} {...props}/>; });
